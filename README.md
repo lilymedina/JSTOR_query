@@ -1,6 +1,6 @@
 # JSTOR_query
 
-This repository contains 
+This repository contains: 
 
 1. One `Rmd` file that takes files `APSR.csv`, `JOP.csv` and `AJPS.csv` located in `\data` and outputs file sample.csv also in `\data`.
 2. Files `APSR.csv`, `JOP.csv` and `AJPS.csv` obtained from JSTOR using (https://constellate.org/dataset/dashboard). The query reads: 
