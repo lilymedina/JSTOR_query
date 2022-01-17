@@ -1,0 +1,55 @@
+---
+title: "create_data"
+author: "Lily Medina"
+date: "11/9/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readr)
+library(dplyr)
+library(randomizr)
+
+
+```
+
+
+```{r include=FALSE}
+# Read and prep data
+# Datasets built and taken from JSTOR using
+# https://constellate.org/dataset/dashboard
+# keywords: "field experiment" OR "field experiments" OR "randomized experiment" OR "randomized experiments" OR "randomized control trial" OR  "randomized control trials" OR "Natural Experiment" OR "Natural Experiments"  OR "Regression Discontinuity"
+
+JOP  <- read_csv("data/JOP.csv") %>%
+        mutate(Journal = "JOP")
+APSR <- read_csv("data/APSR.csv") %>%
+        mutate(Journal = "APSR")
+AJPS <- read_csv("data/AJPS.csv") %>%
+        mutate(Journal = "AJPS")
+
+set.seed(8889)
+
+data<- rbind(JOP, APSR, AJPS) %>% 
+        filter(docSubType == "research-article") 
+
+N <- nrow(data)
+N_i <- table(data$Journal)
+n_i <- round(N_i*150/N)
+
+data <- data %>%
+        mutate(select = strata_rs(strata = Journal,
+                                  strata_n = n_i))
+
+# Sample size = 151
+sample <- filter(data, select == 1) 
+
+write.csv(sample, file = "data/sample.csv")
+      
+```
+
+
+
+
+
+
