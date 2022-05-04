@@ -1,0 +1,66 @@
+---
+title: "Balance Tests in Papers"
+author: "Lily Medina"
+date: "5/2/2022"
+output: pdf_document
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readr)
+library(dplyr)
+library(knitr)
+library(tidyr)
+
+sample  <- read_csv("sample/Balance_Tests.csv") 
+```
+
+```{r}
+# Number of papers by journal
+group_by(sample, Journal) %>%
+summarize(n = n()) %>%
+kable()
+
+
+# Number of papers by experimental design
+n_designs <- group_by(sample, `Experimental Design`) %>%
+summarize(n = n()) 
+kable(n_designs)
+
+
+# Proportion of papers that report balance test
+group_by(sample, `Balance tests`) %>%
+summarize(prop = n()/150) %>%
+kable(digits = 2)
+
+
+# Proportion of papers by experimental design that report balance test
+group_by(sample, `Experimental Design`,  `Balance tests`) %>%
+summarize(n1 = n())  %>%
+right_join(n_designs) %>%
+mutate(prop = n1/n ) %>%
+select(`Experimental Design`,  `Balance tests`, prop) %>%
+spread(`Balance tests`, prop)  %>% 
+kable(digits = 2)
+
+# Among those that report balance tests, the proportion that use some version of an omnibus test rather than covariate-by-covariate tests 
+
+balance_tests <- sample %>% filter (`Balance tests` == "Yes")
+n_balance <- nrow(balance_tests)
+group_by(balance_tests, `p-value`) %>%
+summarize(prop = n()/n_balance ) %>%
+kable(digits = 2)
+
+#  Papers that discuss prognostic importance of covariates
+group_by(balance_tests, `is covariate prognostic`) %>%
+summarize(prop = n()/n_balance ) %>%
+kable(digits = 2)
+
+
+# Papers that include the lagged DV in the balance test
+group_by(balance_tests, `lagged DV`) %>%
+summarize(prop = n()/n_balance) %>%
+kable(digits = 2)
+
+
+```
+

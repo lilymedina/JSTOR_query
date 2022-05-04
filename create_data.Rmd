@@ -49,7 +49,28 @@ write.csv(sample, file = "data/sample.csv")
 ```
 
 
+## Resamle
 
 
 
+```{r include=FALSE}
+
+## Many of the data entries selected in the sample didn't correspond to papers that actually use randomized or quasi-random experiments
+
+set.seed(8888)
+
+data <- data[ !data$id %in% sample$id ,]
+
+# Use the remaining data
+data <- data %>%
+        mutate(select = strata_rs(strata = Journal,
+                                  strata_n = n_i))
+# but reorder them randomly
+rows <- sample(nrow(data))
+new_sample <- data[rows, ]
+
+
+write.csv(new_sample, file = "data/new_sample.csv")
+      
+```
 
