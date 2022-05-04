@@ -7,7 +7,7 @@ This repository contains:
 2. `sample/Balance_Tests.csv`: The data on balance tests in papers.
 
 # Prepping files
-3. An `Rmd` file (`create_data.Rmd`) that takes files `APSR.csv`, `JOP.csv` and `AJPS.csv` located in `\data` and outputs file `sample.csv also in `\data`.
+3. `create_data.Rmd`: An `Rmd` file  that takes files `APSR.csv`, `JOP.csv` and `AJPS.csv` located in `\data` and outputs file `sample.csv also in `\data`.
 4. Files `APSR.csv`, `JOP.csv` and `AJPS.csv` obtained from JSTOR using https://constellate.org/dataset/dashboard. The query reads: 
    
    "field experiment" OR 
